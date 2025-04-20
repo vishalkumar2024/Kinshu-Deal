@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 
-// Middleware
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
