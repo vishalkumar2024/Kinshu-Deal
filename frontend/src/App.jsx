@@ -8,10 +8,14 @@ import store from "./store/store.js"
 import Home from "./pages/Home"
 import Layout from "./components/layout/Layout.jsx"
 import AuthWrapper from "./components/authWrap/AuthWrapper.jsx"
+import {ToastContainer} from 'react-toastify'
+import TxnDetails from "./pages/TxnDetails.jsx"
+import TransactionPage from "./pages/TransactionPage .jsx"
 
 function App() {
   return (
     <Provider store={store}>
+      <ToastContainer/>
       <BrowserRouter>
         <AuthWrapper>
           <Routes>
@@ -20,6 +24,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="admin" element={<AdminDashboard />} />
               <Route path="user" element={<UserPage />} />
+              <Route path="transaction/new" element={<TransactionPage />} />
+              <Route path="admin/txn" element={<TxnDetails/>} />
             </Route>
           </Routes>
         </AuthWrapper>

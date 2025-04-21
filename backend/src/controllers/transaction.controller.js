@@ -3,9 +3,9 @@ import Transaction from "../models/transaction.model.js";
 // Create a new transaction
 export const createTransaction = async (req, res) => {
   try {
-    const { user, ClaimedAmount, passedAmount, remark } = req.body;
+    const { user, ClaimedAmount, remark } = req.body;
     
-    if (!user || !ClaimedAmount || !passedAmount) {
+    if (!user || !ClaimedAmount) {
       return res.status(400).json({ 
         success: false, 
         message: "User, ClaimedAmount, and passedAmount are required fields" 
@@ -15,7 +15,6 @@ export const createTransaction = async (req, res) => {
     const newTransaction = new Transaction({
       user,
       ClaimedAmount,
-      passedAmount,
       remark: remark || "",
     });
 
@@ -55,9 +54,9 @@ export const getAllTransactions = async (req, res) => {
 // Get transactions by user ID
 export const getTransactionsByUser = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { id } = req.params;
     
-    const transactions = await Transaction.find({ user: userId }).populate("user", "-password");
+    const transactions = await Transaction.find({ user: id });
     
     res.status(200).json({
       success: true,
@@ -94,6 +93,22 @@ export const getTransactionById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message || "Failed to fetch transaction",
+    });
+  }
+};
+
+//get logged in user transactions
+export const getLoggedInUserTransactions = async (req, res) => {
+  try {
+    console.log('hello');
+    const userId = req.userId; 
+    const transactions = await Transaction.find({ user: userId });
+    res.status(200).json({success: true,data: transactions,});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch logged in user transactions",
     });
   }
 };

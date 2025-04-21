@@ -1,7 +1,17 @@
+'use client';
+
 import { Edit2 } from "lucide-react";
 import SortableTableHeader from "./SortableTableHeader ";
+import { Link } from "react-router-dom";
 
 const EmployeeTable = ({ employees, handleEditEmployee, sortConfig, requestSort }) => {
+
+
+  // Function to handle row click to navigate
+  const handleRowClick = (employee) => {
+    // This function intentionally left empty as we're using the Link inside the row now
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="overflow-x-auto">
@@ -45,20 +55,35 @@ const EmployeeTable = ({ employees, handleEditEmployee, sortConfig, requestSort 
           <tbody className="divide-y divide-gray-200">
             {employees.length > 0 ? (
               employees.map((employee) => (
-                <tr key={employee.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{employee.employeeCode}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.email}</td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{employee.address}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.medicalCardNo}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">₹{employee.balance.toFixed(2)}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <tr 
+                  key={employee._id} 
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => handleRowClick(employee)}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{employee.user.employeeCode}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.user.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.user.email}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700">{employee.user.address}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.user.medicalCardNumber}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">₹{employee.user.balance.toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex items-center">
                     <button 
                       className="text-blue-600 hover:text-blue-800 mr-3"
-                      onClick={() => handleEditEmployee(employee)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent row click from firing
+                        handleEditEmployee(employee.user);
+                      }}
                     >
                       <Edit2 size={18} />
                     </button>
+                    <Link 
+                      to="/admin/txn" 
+                      state={employee}
+                      className="text-blue-600 hover:text-blue-800 ml-2"
+                      onClick={(e) => e.stopPropagation()} // Prevent row click from firing
+                    >
+                      View Details
+                    </Link>
                   </td>
                 </tr>
               ))

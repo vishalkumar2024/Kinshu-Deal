@@ -1,37 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, User, CreditCard, HomeIcon, Calendar, DollarSign } from 'lucide-react';
+import { User, CreditCard, HomeIcon, Calendar } from 'lucide-react';
+import axios from 'axios';
+import config from '../config/config';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const UserPage = () => {
-  // Mock user data - in a real application, this would come from an API
-  const [userData, setUserData] = useState({
-    name: "John Smith",
-    employeeCode: "EMP12345",
-    address: "123 Main Street, New York, NY 10001",
-    medicalCardNo: "MC-987654321",
-    balance: 2500.00
-  });
+  const { user } = useSelector(state => state.user);
 
-  // Mock transaction data - in a real application, this would come from an API
-  const [transactions, setTransactions] = useState([
-    { id: 1, claimedAmount: 750.00, passedAmount: 650.00, month: "January", year: 2025, remarks: "Hospital visit" },
-    { id: 2, claimedAmount: 320.00, passedAmount: 320.00, month: "February", year: 2025, remarks: "Prescription medication" },
-    { id: 3, claimedAmount: 180.00, passedAmount: 150.00, month: "March", year: 2025, remarks: "Specialist consultation" },
-    { id: 4, claimedAmount: 500.00, passedAmount: 450.00, month: "April", year: 2025, remarks: "Dental procedure" }
-  ]);
-
-  // Loading state
+  // State for user data and transactions
+  const [userData, setUserData] = useState(null);
+  const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate API call
+  // Fetch user data and transactions from API
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+    const fetchData = async () => {
+      try {
+        // Fetch user data
+        const userResponse = await axios.get(`${config.API_URL}/api/user/${user._id}`, {
+          withCredentials: true
+        });
+        setUserData(userResponse.data.data);
 
-  const handleLogout = () => {
-    alert("Logging out...");
-    // In a real app, this would redirect to login page after clearing auth state
+        // Fetch transactions for the user
+        const transactionResponse = await axios.get(`${config.API_URL}/api/transaction/user/${user._id}`, {
+          withCredentials: true
+        });
+        setTransactions(transactionResponse.data.data);
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user._id]);
+
+  // Format date from ISO string to Month, Year format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    return `${month}, ${year}`;
   };
 
   if (isLoading) {
@@ -45,19 +58,29 @@ const UserPage = () => {
     );
   }
 
+  if (!userData) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-center">
+          <p className="text-gray-700">No user data available.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-t from-blue-100 via-indigo-100 to-blue-300 font-['Inter']">
       {/* Header */}
-      <header className=" bg-blue-400 shadow">
+      <header className="bg-blue-400 shadow">
         <div className="max-w-7xl mx-auto text-blue-600 px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex  items-center">
+          <div className="flex items-center">
             <CreditCard className="h-8 w-8 text-blue-800" />
-            <h1 className="ml-3 text-2xl  font-bold text-gray-900">MediTransact Medical Card Portal</h1>
+            <h1 className="ml-3 text-2xl font-bold text-gray-900">MediTransact Medical Card Portal</h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* User Details Card */}
         <div className="bg-white shadow-xl shadow-gray-400 rounded-lg mb-10">
           <div className="px-6 py-5 border-b border-gray-200">
@@ -65,53 +88,59 @@ const UserPage = () => {
           </div>
           <div className="px-6 py-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start hover:bg-gray-200 p-3">
+                <User className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
+                <div>
+                  <p className="text-sm text-blue-500 font-semibold">Full Name</p>
+                  <p className="text-base font-medium text-gray-900 mt-1">{userData.name}</p>
+                </div>
+              </div>
+
+              <div className="flex hover:bg-gray-200 p-3 items-start">
+                <CreditCard className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
+                <div>
+                  <p className="text-sm text-blue-500 font-semibold">Medical Card Number</p>
+                  <p className="text-base font-medium text-gray-900 mt-1">{userData.medicalCardNumber}</p>
+                </div>
+              </div>
 
               <div className="flex items-start hover:bg-gray-200 p-3">
                 <User className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
                 <div>
-                  <p className="text-sm  text-blue-500 font-semibold">Full Name</p>
-                  <p className="text-base font-medium text-gray-900 mt-1">{userData.name}</p>
-                </div>
-              </div>
-              
-              <div className="flex hover:bg-gray-200 p-3 items-start">
-                <CreditCard className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
-                <div>
-                  <p className="text-sm   text-blue-500 font-semibold ">Medical Card Number</p>
-                  <p className="text-base font-medium text-gray-900 mt-1">{userData.medicalCardNo}</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start hover:bg-gray-200 p-3">
-                <User className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
-                <div>
-                  <p className="text-sm  text-blue-500 font-semibold">Employee Code</p>
+                  <p className="text-sm text-blue-500 font-semibold">Employee Code</p>
                   <p className="text-base font-medium text-gray-900 mt-1">{userData.employeeCode}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start hover:bg-gray-200 p-3">
-                <HomeIcon className="h-5 w-5  text-gray-500 mt-0.5 mr-3" />
+                <HomeIcon className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
                 <div>
-                  <p className="text-sm  text-blue-500 font-semibold">Address</p>
+                  <p className="text-sm text-blue-500 font-semibold">Address</p>
                   <p className="text-base font-medium text-gray-900 mt-1">{userData.address}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="px-8 py-7   hover:bg-gray-200  rounded-b-lg">
-            <div className="flex items-center">
-              <DollarSign className="h-6 w-6 text-green-600 mr-2" />
-              <div>
-                <p className="text-sm  text-blue-500 font-semibold">Current Balance</p>
-                <p className="text-xl font-semibold text-green-600">${userData.balance.toFixed(2)}</p>
+          <div className="px-8 py-7 hover:bg-gray-200 rounded-b-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div>
+                  <p className="text-sm text-blue-500 font-semibold">Current Balance</p>
+                  <p className="text-xl font-semibold text-green-600">₹{userData.balance.toFixed(2)}</p>
+                </div>
               </div>
+              <Link
+                to="/transaction/new"
+                className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                New Transaction
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Transactions Table */}
-        <div className="bg-white shadow-xl shadow-gray-400rounded-lg">
+        <div className="bg-white shadow-xl shadow-gray-400 rounded-lg">
           <div className="px-6 py-5 border-b border-gray-200">
             <div className="flex items-center">
               <Calendar className="h-5 w-5 text-gray-500 mr-2" />
@@ -122,16 +151,16 @@ const UserPage = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
-                    Period
+                  <th scope="col" className="px-6 py-3 text-left text-xs text-blue-500 font-semibold uppercase tracking-wider">
+                    Date
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs text-blue-500 font-semibold uppercase tracking-wider">
                     Claimed Amount
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs text-blue-500 font-semibold uppercase tracking-wider">
                     Passed Amount
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs text-blue-500 font-semibold uppercase tracking-wider">
                     Remarks
                   </th>
                 </tr>
@@ -139,20 +168,20 @@ const UserPage = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {transactions.length > 0 ? (
                   transactions.map((transaction) => (
-                    <tr key={transaction.id}>
+                    <tr key={transaction._id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {`${transaction.month}, ${transaction.year}`}
+                        {formatDate(transaction.createdAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        ${transaction.claimedAmount.toFixed(2)}
+                        ₹{transaction.ClaimedAmount.toFixed(2)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <span className={transaction.passedAmount < transaction.claimedAmount ? "text-yellow-600" : "text-green-600"}>
-                          ${transaction.passedAmount.toFixed(2)}
+                        <span className={transaction.passedAmount < transaction.ClaimedAmount ? "text-yellow-600" : "text-green-600"}>
+                          ₹{transaction.passedAmount.toFixed(2)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {transaction.remarks}
+                        {transaction.remark}
                       </td>
                     </tr>
                   ))

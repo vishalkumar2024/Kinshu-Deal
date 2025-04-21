@@ -20,34 +20,33 @@ const AdminDashboard = () => {
     employeeCode: '',
     address: '',
     medicalCardNo: '',
-    balance: 0
+    balance: 0,
+    role:'',
+    password:''
   });
 
   useEffect(() => {
-    const mockEmployees = [
-      { id: 1, name: 'John Doe', email: 'john.doe@example.com', employeeCode: 'EMP001', address: '123 Main St, City', medicalCardNo: 'MC001', balance: 5000 },
-      { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', employeeCode: 'EMP002', address: '456 Oak Ave, Town', medicalCardNo: 'MC002', balance: 3500 },
-      { id: 3, name: 'Robert Johnson', email: 'robert.johnson@example.com', employeeCode: 'EMP003', address: '789 Pine Rd, Village', medicalCardNo: 'MC003', balance: 4200 },
-      { id: 4, name: 'Emily Davis', email: 'emily.davis@example.com', employeeCode: 'EMP004', address: '101 Maple Dr, County', medicalCardNo: 'MC004', balance: 2800 },
-      { id: 5, name: 'Michael Wilson', email: 'michael.wilson@example.com', employeeCode: 'EMP005', address: '202 Cedar Ln, District', medicalCardNo: 'MC005', balance: 6100 },
-    ];
-    setEmployees(mockEmployees);
-    const fetchEmployees = async () => {
+    const fetchTxn = async () => {
       try {
-        const {data}=await axios.get(`${config.API_URL}/api/transaction`,{ withCredentials: true });
-        console.log(data.data)
+        axios.get(`${config.API_URL}/api/transaction`, { withCredentials: true })
+          .then(({data}) => {
+            setEmployees(data.data);
+          })
+          .catch((error) => {
+            console.error('Error fetching transactions:', error);
+          });
       } catch (error) {
-        console.error('Error fetching employees:', error);
+        console.error('Error fetching transactions:', error);
       }
     };
-    fetchEmployees();
-  }, []);
+    fetchTxn();
+  },[]);
 
   const filteredEmployees = employees.filter(employee =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.employeeCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.medicalCardNo.toLowerCase().includes(searchTerm.toLowerCase())
+    employee.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.user.employeeCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.user.medicalCardNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const requestSort = (key) => {
@@ -79,7 +78,9 @@ const AdminDashboard = () => {
       employeeCode: '',
       address: '',
       medicalCardNo: '',
-      balance: 0
+      balance: 0,
+      role:'',
+      password:''
     });
   };
 

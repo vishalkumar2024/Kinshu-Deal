@@ -1,11 +1,27 @@
 import React from 'react';
 import { LogOut, LogIn } from 'lucide-react';
 import Logo from '../logo/Logo';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { logout } from '../../store/userSlice';
+import { toast } from 'react-toastify';
+import config from '../../config/config';
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+  const handleLogout=async () => {
+    try {
+      await axios.get(`${config.API_URL}/api/auth/logout`, { withCredentials: true });
+      dispatch(logout());
+      toast.success('Logout successful!');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      toast.error('Logout failed. Please try again.');
+    }
+  }
   
   return (
     <nav className="backdrop-blur-md bg-gradient-to-r from-blue-800 via-blue-700 to-blue-900/90 text-white shadow-2xl py-4">
@@ -23,6 +39,7 @@ const Navbar = () => {
                 Welcome, <span className="font-semibold text-white">{user.name}</span>
               </span>
               <button 
+                onClick={handleLogout}
                 className="flex items-center text-sm cursor-pointer font-medium text-blue-100 hover:text-white transition duration-200 bg-blue-600/30 px-3 py-2 rounded-lg hover:bg-blue-600/50"
               >
                 <LogOut className="w-5 h-5 mr-1" />

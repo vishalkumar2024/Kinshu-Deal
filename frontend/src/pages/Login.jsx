@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/logo/Logo';
-// import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import config from '../config/config';
 import { useDispatch } from 'react-redux';
@@ -83,12 +83,13 @@ const Login = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-3 top-2.5 text-blue-500"
+                className="absolute right-3 top-2.5 text-blue-500 hover:text-blue-700 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {/* {showPassword ? <EyeOff size={20} /> : <Eye size={20} />} */}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
-              {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>}
             </div>
+            {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
           <div className="flex justify-between text-sm text-blue-600">
@@ -96,7 +97,7 @@ const Login = () => {
               <input type="checkbox" className="rounded border-blue-300" />
               <span>Remember me</span>
             </label>
-            <a href="#" className="hover:underline">Forgot Password?</a>
+            <a href="" className="hover:underline">Forgot Password?</a>
           </div>
 
           <button
@@ -109,7 +110,7 @@ const Login = () => {
         </form>
 
         <p className="mt-6 text-center text-sm text-blue-700">
-          Don’t have an account?{' '}
+          Don't have an account?{' '}
           <Link to="/signup" className="text-blue-900 font-medium hover:underline">Sign Up</Link>
         </p>
       </div>

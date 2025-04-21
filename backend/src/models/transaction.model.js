@@ -12,7 +12,7 @@ const transactionSchema = new mongoose.Schema({
   },
   passedAmount: {
     type: Number,
-    required: true,
+    default: 0,
   },
   remark: {
     type: String,
