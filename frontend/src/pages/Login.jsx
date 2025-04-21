@@ -5,6 +5,8 @@ import Logo from '../components/logo/Logo';
 // import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import config from '../config/config';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/userSlice';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -12,13 +14,15 @@ const Login = () => {
   const [loginError, setLoginError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = async (inputData) => {
     setIsLoading(true);
     setLoginError('');
     try {
       const { data } = await axios.post(`${config.API_URL}/api/auth/login`, inputData, { withCredentials: true });
-      navigate('/dashboard');
+      dispatch(login(data.user))
+      navigate('/admin');
     } catch (error) {
       setLoginError(error.response?.data?.message || 'Login failed. Please try again.');
     } finally {

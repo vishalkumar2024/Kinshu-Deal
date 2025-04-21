@@ -51,7 +51,7 @@ const EmployeeTable = ({ employees, handleEditEmployee, sortConfig, requestSort 
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.email}</td>
                   <td className="px-6 py-4 text-sm text-gray-700">{employee.address}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.medicalCardNo}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${employee.balance.toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">₹{employee.balance.toFixed(2)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     <button 
                       className="text-blue-600 hover:text-blue-800 mr-3"

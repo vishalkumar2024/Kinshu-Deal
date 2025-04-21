@@ -4,6 +4,8 @@ import EmployeeTable from '../components/adminDashboard/EmployeeTable';
 import DashboardHeader from '../components/adminDashboard/DashboardHeader';
 import EditEmployeeModal from '../components/adminDashboard/EditEmployeeModal ';
 import AddEmployeeModal from '../components/adminDashboard/AddEmployeeModal ';
+import axios from 'axios';
+import config from '../config/config';
 
 const AdminDashboard = () => {
   const [employees, setEmployees] = useState([]);
@@ -30,6 +32,15 @@ const AdminDashboard = () => {
       { id: 5, name: 'Michael Wilson', email: 'michael.wilson@example.com', employeeCode: 'EMP005', address: '202 Cedar Ln, District', medicalCardNo: 'MC005', balance: 6100 },
     ];
     setEmployees(mockEmployees);
+    const fetchEmployees = async () => {
+      try {
+        const {data}=await axios.get(`${config.API_URL}/api/transaction`,{ withCredentials: true });
+        console.log(data.data)
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+    fetchEmployees();
   }, []);
 
   const filteredEmployees = employees.filter(employee =>
