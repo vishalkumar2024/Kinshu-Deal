@@ -46,70 +46,64 @@ const UserPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-t from-blue-100 via-indigo-100 to-blue-300 font-['Inter']">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <CreditCard className="h-8 w-8 text-blue-600" />
-            <h1 className="ml-3 text-2xl font-bold text-gray-900">XYZ Medical Card Portal</h1>
+      <header className=" bg-blue-400 shadow">
+        <div className="max-w-7xl mx-auto text-blue-600 px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <div className="flex  items-center">
+            <CreditCard className="h-8 w-8 text-blue-800" />
+            <h1 className="ml-3 text-2xl  font-bold text-gray-900">MediTransact Medical Card Portal</h1>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </button>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* User Details Card */}
-        <div className="bg-white shadow rounded-lg mb-8">
+        <div className="bg-white shadow-xl shadow-gray-400 rounded-lg mb-10">
           <div className="px-6 py-5 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Personal Details</h2>
+            <h2 className="text-lg font-medium text-gray-900">Employee Details</h2>
           </div>
           <div className="px-6 py-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex items-start">
+
+              <div className="flex items-start hover:bg-gray-200 p-3">
                 <User className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Full Name</p>
+                  <p className="text-sm  text-blue-500 font-semibold">Full Name</p>
                   <p className="text-base font-medium text-gray-900 mt-1">{userData.name}</p>
                 </div>
               </div>
               
-              <div className="flex items-start">
+              <div className="flex hover:bg-gray-200 p-3 items-start">
                 <CreditCard className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Medical Card Number</p>
+                  <p className="text-sm   text-blue-500 font-semibold ">Medical Card Number</p>
                   <p className="text-base font-medium text-gray-900 mt-1">{userData.medicalCardNo}</p>
                 </div>
               </div>
               
-              <div className="flex items-start">
+              <div className="flex items-start hover:bg-gray-200 p-3">
                 <User className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Employee Code</p>
+                  <p className="text-sm  text-blue-500 font-semibold">Employee Code</p>
                   <p className="text-base font-medium text-gray-900 mt-1">{userData.employeeCode}</p>
                 </div>
               </div>
               
-              <div className="flex items-start">
-                <HomeIcon className="h-5 w-5 text-gray-500 mt-0.5 mr-3" />
+              <div className="flex items-start hover:bg-gray-200 p-3">
+                <HomeIcon className="h-5 w-5  text-gray-500 mt-0.5 mr-3" />
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Address</p>
+                  <p className="text-sm  text-blue-500 font-semibold">Address</p>
                   <p className="text-base font-medium text-gray-900 mt-1">{userData.address}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="px-6 py-5 bg-gray-50 rounded-b-lg">
+          <div className="px-8 py-7   hover:bg-gray-200  rounded-b-lg">
             <div className="flex items-center">
               <DollarSign className="h-6 w-6 text-green-600 mr-2" />
               <div>
-                <p className="text-sm font-medium text-gray-500">Current Balance</p>
+                <p className="text-sm  text-blue-500 font-semibold">Current Balance</p>
                 <p className="text-xl font-semibold text-green-600">${userData.balance.toFixed(2)}</p>
               </div>
             </div>
@@ -117,7 +111,7 @@ const UserPage = () => {
         </div>
 
         {/* Transactions Table */}
-        <div className="bg-white shadow rounded-lg">
+        <div className="bg-white shadow-xl shadow-gray-400rounded-lg">
           <div className="px-6 py-5 border-b border-gray-200">
             <div className="flex items-center">
               <Calendar className="h-5 w-5 text-gray-500 mr-2" />
@@ -128,16 +122,16 @@ const UserPage = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
                     Period
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
                     Claimed Amount
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
                     Passed Amount
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3 text-left text-xs  text-blue-500 font-semibold uppercase tracking-wider">
                     Remarks
                   </th>
                 </tr>
@@ -212,15 +206,6 @@ const UserPage = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} XYZ Company. All rights reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };
