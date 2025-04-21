@@ -2,7 +2,7 @@ import User from '../models/user.model.js';
 
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password, address, employeeCode, medicalCardNumber, role } = req.body;
+    const { name, email, password, address, employeeCode, medicalCardNumber, role,balance } = req.body;
     
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -16,7 +16,8 @@ export const createUser = async (req, res) => {
       address,
       employeeCode,
       medicalCardNumber,
-      role
+      role,
+      balance
     });
     
     await user.save();
