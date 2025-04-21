@@ -1,79 +1,68 @@
-# 🌾 Contract Farming Platform
+# 🏥 Medical Card Transaction Management System
 
-A comprehensive web platform built using **React JS** and **Tailwind CSS** to empower farmers by providing assured contract farming opportunities. This system connects farmers with buyers (such as wholesalers, exporters, and retailers) and facilitates transparent contracts, secure payments, and effective communication — all in one place.
-
----
-
-## 🚀 Tech Stack
-
-- **Frontend**: React JS  
-- **Styling**: Tailwind CSS  
-- **Routing**: React Router DOM  
-- **State Management**: Context API or Zustand  
-- **Repo Type**: Single monorepo for frontend logic and UI components
+A web application for **XYZ Company** to manage medical card transactions of their **ex-employees**.
 
 ---
 
-## 👥 User Roles
+## 📌 Project Overview
 
-### 🧑‍🌾 Farmer
-- Register/Login  
-- Create/Edit profile (location, crops, yield)  
-- Browse contract offers  
-- Apply for contracts  
-- Track contract status and payments  
-
-### 🛒 Buyer
-- Register/Login  
-- Create/Edit profile (organization details)  
-- View farmers  
-- Post contract offers  
-- Manage and track ongoing contracts  
+XYZ provides medical cards with a fixed balance to their ex-employees. This platform helps manage card transactions and employee data efficiently through dedicated **User** and **Admin** panels.
 
 ---
 
-## 📄 Pages and Modules
+## 👨‍💻 Features
 
-### 1. Homepage
-- Mission statement
-- Benefits of contract farming
-- CTA buttons: “Join as Farmer” / “Join as Buyer”
-- Success stats and testimonials
-
-### 2. Authentication
-- Login / Register pages
-- Role-based redirection (Farmer or Buyer)
-
-### 3. Farmer Dashboard
-- Browse contracts  
-- My Contracts (Applied / In Progress / Completed)  
-- Profile management  
-- Notifications (e.g., payment updates)
-
-### 4. Buyer Dashboard
-- Post new contract offers  
-- Browse farmer profiles with filters  
-- Contract management dashboard  
-- Buyer-side chat and notifications
-
-### 5. Contract Page
-- View contract terms: crop, price, delivery, penalties  
-- Digital signing simulation  
-- Status: Drafted → Signed → Completed
-
-### 6. Chat System
-- Buyer ↔ Farmer messaging system  
-- Scoped to contracts  
-- Threaded interface with notifications
-
-### 7. Payments UI
-- Simulate milestone-based payment flow:  
-  - Advance  
-  - On Delivery  
-  - Completion  
-- Visual timeline of transaction events
+### 🔐 Authentication
+- Secure login with roles: `USER` and `ADMIN`.
+- Role-based redirection after login.
 
 ---
 
-## 📁 Folder Structure
+### 👤 User Panel
+Accessible only to users with the role `USER`.
+
+Displays:
+- **Personal Information**:
+  - Name
+  - Employee Code
+  - Address
+  - Medical Card Number
+
+- **Transaction Table**:
+  - Claimed Amount
+  - Passed Amount
+  - Month
+  - Year
+  - Remarks
+
+---
+
+### 🛠️ Admin Panel
+Accessible only to users with the role `ADMIN`.
+
+#### 1. ➕ Add Employee
+- Add a new ex-employee to the system.
+
+#### 2. ✏️ Update Employee
+- Update or modify any details of an existing employee.
+
+#### 3. 📤 Transaction Dump
+- Upload a `.csv` or `.xlsx` file containing multiple transaction records.
+- Automatically insert parsed data into the database.
+
+> ⚠️ Assumes a pre-existing database of ex-employees with testing data for development.
+
+---
+
+## 🧩 Tech Stack
+
+| Layer      | Technology Used                  |
+|------------|----------------------------------|
+| Frontend   | React.js, Tailwind CSS |
+| Backend    | Node.js, Express.js              |
+| Database   | MongoDB (via Mongoose)  |
+| File Upload| Multer, csv-parser / xlsx        |
+| Auth       | JWT, bcryptjs                    |
+
+---
 
