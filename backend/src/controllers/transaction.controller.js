@@ -1,4 +1,5 @@
 import Transaction from "../models/transaction.model.js";
+import User from "../models/user.model.js";
 
 // Create a new transaction
 export const createTransaction = async (req, res) => {
@@ -56,7 +57,7 @@ export const getTransactionsByUser = async (req, res) => {
   try {
     const { id } = req.params;
     
-    const transactions = await Transaction.find({ user: id });
+    const transactions = await Transaction.find({ user: id }).populate("user", "-password");
     
     res.status(200).json({
       success: true,
@@ -117,33 +118,33 @@ export const getLoggedInUserTransactions = async (req, res) => {
 export const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ClaimedAmount, passedAmount, remark } = req.body;
-    
+    const { passedAmount } = req.body;
+
     const transaction = await Transaction.findById(id);
-    
+
     if (!transaction) {
       return res.status(404).json({
         success: false,
         message: "Transaction not found",
       });
     }
-    
-    // Update fields if provided
-    if (ClaimedAmount !== undefined) transaction.ClaimedAmount = ClaimedAmount;
-    if (passedAmount !== undefined) transaction.passedAmount = passedAmount;
-    if (remark !== undefined) transaction.remark = remark;
-    
+    if (passedAmount !== undefined) {
+      transaction.passedAmount = passedAmount;
+    }
     const updatedTransaction = await transaction.save();
-    
+    const user=await User.findById(transaction.user);
+    user.balance=user.balance-passedAmount;
+    await user.save();
+
     res.status(200).json({
       success: true,
       data: updatedTransaction,
-      message: "Transaction updated successfully",
+      message: "Approved amount updated successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message || "Failed to update transaction",
+      message: error.message || "Failed to update approved amount",
     });
   }
 };

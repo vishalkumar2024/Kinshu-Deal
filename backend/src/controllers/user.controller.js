@@ -27,6 +27,7 @@ export const createUser = async (req, res) => {
     
     return res.status(201).json({ success: true, data: userResponse });
   } catch (error) {
+    console.error('Error creating user:', error.message);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -56,7 +57,7 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const { name, email, address, employeeCode, medicalCardNumber, role } = req.body;
+    const { name, email, address, employeeCode, medicalCardNumber, role,balance } = req.body;
     
     if (req.body.password) {
       return res.status(400).json({ 
@@ -74,7 +75,7 @@ export const updateUser = async (req, res) => {
     
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { name, email, address, employeeCode, medicalCardNumber, role },
+      { name, email, address, employeeCode, medicalCardNumber, role, balance },
       { new: true, runValidators: true }
     ).select('-password');
     

@@ -11,11 +11,12 @@ import AuthWrapper from "./components/authWrap/AuthWrapper.jsx"
 import {ToastContainer} from 'react-toastify'
 import TxnDetails from "./pages/TxnDetails.jsx"
 import TransactionPage from "./pages/TransactionPage .jsx"
+import AllUsers from "./pages/AllUsers.jsx"
 
 function App() {
   return (
     <Provider store={store}>
-      <ToastContainer/>
+      <ToastContainer position="top-center" />
       <BrowserRouter>
         <AuthWrapper>
           <Routes>
@@ -26,6 +27,7 @@ function App() {
               <Route path="user" element={<UserPage />} />
               <Route path="transaction/new" element={<TransactionPage />} />
               <Route path="admin/txn" element={<TxnDetails/>} />
+              <Route path="admin/allUsers" element={<AllUsers/>} />
             </Route>
           </Routes>
         </AuthWrapper>

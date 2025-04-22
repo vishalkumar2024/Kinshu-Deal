@@ -63,6 +63,7 @@ const TransactionPage = () => {
       }, 2000);
       
     } catch (err) {
+      toast.error(err.response?.data?.message || err.message || 'Failed to submit transaction');
       setError(err.response?.data?.message || err.message || 'Failed to submit transaction');
       console.error('Transaction submission error:', err);
     } finally {

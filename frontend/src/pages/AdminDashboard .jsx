@@ -6,6 +6,7 @@ import EditEmployeeModal from '../components/adminDashboard/EditEmployeeModal ';
 import AddEmployeeModal from '../components/adminDashboard/AddEmployeeModal ';
 import axios from 'axios';
 import config from '../config/config';
+import { toast } from 'react-toastify';
 
 const AdminDashboard = () => {
   const [employees, setEmployees] = useState([]);
@@ -21,7 +22,7 @@ const AdminDashboard = () => {
     address: '',
     medicalCardNo: '',
     balance: 0,
-    role:'',
+    role:'user',
     password:''
   });
 
@@ -43,10 +44,10 @@ const AdminDashboard = () => {
   },[]);
 
   const filteredEmployees = employees.filter(employee =>
-    employee.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.user.employeeCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.user.medicalCardNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    employee.user?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.user?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.user?.employeeCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.user?.medicalCardNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const requestSort = (key) => {
@@ -68,20 +69,21 @@ const AdminDashboard = () => {
   });
 
   const handleAddEmployee = () => {
-    const newId = employees.length ? Math.max(...employees.map(e => e.id)) + 1 : 1;
-    const employeeToAdd = { ...newEmployee, id: newId };
-    setEmployees([...employees, employeeToAdd]);
-    setIsAddEmployeeModalOpen(false);
-    setNewEmployee({
-      name: '',
-      email: '',
-      employeeCode: '',
-      address: '',
-      medicalCardNo: '',
-      balance: 0,
-      role:'',
-      password:''
-    });
+    axios.post(`${config.API_URL}/api/user`,newEmployee, { withCredentials: true })
+      .then(({data}) => {
+        setEmployees([...employees, {user:data.data}]);
+        setIsAddEmployeeModalOpen(false);
+        setNewEmployee({
+          name: '',
+          email: '',
+          employeeCode: '',
+          address: '',
+          medicalCardNo: '',
+          balance: 0,
+          role:'user',
+          password:''
+        });  
+      })
   };
 
   const handleEditEmployee = (employee) => {
@@ -91,7 +93,7 @@ const AdminDashboard = () => {
 
   const handleSaveEdit = () => {
     setEmployees(employees.map(emp =>
-      emp.id === selectedEmployee.id ? selectedEmployee : emp
+      emp._id === selectedEmployee._id ? selectedEmployee : emp
     ));
     setIsEditModalOpen(false);
   };
@@ -99,7 +101,7 @@ const AdminDashboard = () => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      alert(`File "${file.name}" uploaded successfully. In a real application, this would process the transaction data.`);
+      toast.success(`File "${file.name}" uploaded successfully. In a real application, this would process the transaction data.`);
     }
   };
 

@@ -37,7 +37,7 @@ const UserPage = () => {
     };
 
     fetchData();
-  }, [user._id]);
+  }, [user]);
 
   // Format date from ISO string to Month, Year format
   const formatDate = (dateString) => {

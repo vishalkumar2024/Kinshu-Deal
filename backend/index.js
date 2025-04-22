@@ -9,7 +9,7 @@ import authRoute from './src/routes/auth.route.js';
 import transactionRoute from './src/routes/transaction.route.js';
 
 dotenv.config({
-  path:'./.env',
+  path: './.env',
 });
 
 const app = express();
@@ -24,9 +24,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: process.env.CLIENT_URL,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE'], 
-  credentials: true,
+  origin: (origin, callback) => {
+    if (!origin || origin === process.env.CLIENT_URL) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE'],
+  credentials: true
 }));
 
 if (process.env.NODE_ENV === 'development') {
@@ -34,7 +40,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Routes
-app.use('/api/auth', authRoute); 
+app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use('/api/transaction', transactionRoute);
 

@@ -22,8 +22,9 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
+      const session = localStorage.getItem('session');
       try {
-        const { data } = await axios.get(`${config.API_URL}/api/auth`, { withCredentials: true });
+        const { data } = await axios.get(`${config.API_URL}/api/auth/${session}`, { withCredentials: true });
         dispatch(login(data.data));
         setLoading(false);
       } catch (error) {

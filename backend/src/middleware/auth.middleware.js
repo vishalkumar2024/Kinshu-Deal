@@ -1,14 +1,16 @@
 import jwt from 'jsonwebtoken';
 
 const authenticate = async (req, res, next) => {
-    const token = req.cookies?.token;
+    const { token } = req.params;
+    const tkn = token.replace(/^["']|["']$/g, '');
+
+    console.log(typeof token)
     if (!token) {
         return res.status(401).json({ error: 'Access denied. No token provided.' });
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(tkn, process.env.JWT_SECRET);
         req.userId = decoded.userId;
-        console.log(req.userId);
         next();
     } catch (error) {
         console.error('Token verification error:', error.message);

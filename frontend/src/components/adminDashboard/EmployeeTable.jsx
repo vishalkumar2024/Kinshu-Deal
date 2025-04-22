@@ -67,15 +67,6 @@ const EmployeeTable = ({ employees, handleEditEmployee, sortConfig, requestSort 
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.user.medicalCardNumber}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">₹{employee.user.balance.toFixed(2)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex items-center">
-                    <button 
-                      className="text-blue-600 hover:text-blue-800 mr-3"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent row click from firing
-                        handleEditEmployee(employee.user);
-                      }}
-                    >
-                      <Edit2 size={18} />
-                    </button>
                     <Link 
                       to="/admin/txn" 
                       state={employee}

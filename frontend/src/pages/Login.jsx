@@ -7,6 +7,7 @@ import axios from 'axios';
 import config from '../config/config';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/userSlice';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -22,6 +23,8 @@ const Login = () => {
     try {
       const { data } = await axios.post(`${config.API_URL}/api/auth/login`, inputData, { withCredentials: true });
       dispatch(login(data.user))
+      localStorage.setItem('session', JSON.stringify(data.token));
+      toast.success('Login successful!');
       navigate('/admin');
     } catch (error) {
       setLoginError(error.response?.data?.message || 'Login failed. Please try again.');
