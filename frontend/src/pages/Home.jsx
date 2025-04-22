@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
-  console.log(user)
   
   const renderButton = () => {
     if (!user) {

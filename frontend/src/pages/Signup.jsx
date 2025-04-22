@@ -19,7 +19,6 @@ const Signup = () => {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Registration data:', data);
       navigate('/login', { state: { message: 'Registration successful. Please log in.' } });
     } catch (error) {
       setSignupError('An error occurred during registration. Please try again.');

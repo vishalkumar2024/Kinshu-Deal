@@ -101,7 +101,6 @@ export const getTransactionById = async (req, res) => {
 //get logged in user transactions
 export const getLoggedInUserTransactions = async (req, res) => {
   try {
-    console.log('hello');
     const userId = req.userId; 
     const transactions = await Transaction.find({ user: userId });
     res.status(200).json({success: true,data: transactions,});

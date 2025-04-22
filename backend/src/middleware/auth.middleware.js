@@ -3,8 +3,6 @@ import jwt from 'jsonwebtoken';
 const authenticate = async (req, res, next) => {
     const { token } = req.params;
     const tkn = token.replace(/^["']|["']$/g, '');
-
-    console.log(typeof token)
     if (!token) {
         return res.status(401).json({ error: 'Access denied. No token provided.' });
     }
